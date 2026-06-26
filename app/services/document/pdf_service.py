@@ -1,5 +1,5 @@
 import os
-
+import fitz
 from pypdf import PdfReader
 
 def load_pdf_text(file_path):
@@ -32,3 +32,17 @@ def load_all_pdfs(folder):
             })
 
     return documents
+
+def read_pdf(path):
+
+    doc = fitz.open(path)
+
+    text = []
+
+    for page in doc:
+
+        text.append(page.get_text())
+
+    doc.close()
+
+    return "\n".join(text)

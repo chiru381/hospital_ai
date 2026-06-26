@@ -9,10 +9,11 @@ from app.services.rag_service import ingest_pdfs
 from app.routes.document_routes import (
     router as document_router
 )
-
-app = FastAPI()
-
-app.include_router(document_router)
+from app.routes.documents_routes import router as documents_router
+app = FastAPI(
+    title="Hospital RAG API",
+    version="1.0.0"
+)
 
 @app.on_event("startup")
 
@@ -22,22 +23,22 @@ async def startup():
     
     ingest_pdfs()
 
-    print("Hospital PDFs loaded")
+    print("Hospital PDFs Loaded Successfully")
     
 
 @app.get("/")
 def home():
-    return {"message": "Hello FastAPI"}
+    return {
+        "message": "Hospital RAG API Running"
+    }
 
-app.include_router(
-    ai_router,
-    prefix="/ai"
-)
-
+app.include_router(ai_router, prefix="/ai")
 app.include_router(user_router)
 app.include_router(embedding_router)
 app.include_router(qdrant_router)
 app.include_router(health_router)
+app.include_router(document_router)
+app.include_router(documents_router)
 
 # http://127.0.0.1:8000/ai/chat?question=What%20is%20FastAPI
 # http://127.0.0.1:8000/ai/ask?question=What%20is%20my%20company%20name

@@ -7,7 +7,7 @@ from app.services.qdrant_service import (
     COLLECTION_NAME
 )
 
-from app.services.pdf_service import load_all_pdfs
+from app.services.document.pdf_service import load_all_pdfs
 
 from app.utils.chunking import split_text
 from qdrant_client.models import Filter
